@@ -9,7 +9,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# ✅ Create table if not exists
+# Create table if not exists
 with get_db_connection() as conn:
     conn.execute("""
         CREATE TABLE IF NOT EXISTS users (
@@ -69,3 +69,4 @@ def logout():
     session.pop("user", None)
     flash("You have been logged out.", "info")
     return redirect(url_for("auth.login"))
+

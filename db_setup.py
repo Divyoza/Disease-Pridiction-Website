@@ -1,4 +1,3 @@
-# db_setup.py
 import sqlite3
 
 conn = sqlite3.connect("users.db")
@@ -15,3 +14,4 @@ CREATE TABLE IF NOT EXISTS users (
 
 conn.commit()
 conn.close()
+

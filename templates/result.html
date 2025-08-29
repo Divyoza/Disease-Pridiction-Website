@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{ disease }} — Result</h2>
+
+  <div class="result-row">
+    <div><strong>Risk (estimated):</strong></div>
+    <div style="font-size:28px;font-weight:800">{{ probability }}%</div>
+  </div>
+
+  <p style="margin-top:10px">
+    {% if probability >= 50 %}
+      <em style="color:#b71c1c">Higher risk — please consult a clinician and follow the meal plan closely.</em>
+    {% else %}
+      <em style="color:#1b5e20">Lower risk — maintain healthy habits and routine checks.</em>
+    {% endif %}
+  </p>
+
+  <h3 style="margin-top:18px">7-Day Meal Plan</h3>
+  <div class="grid">
+    {% for day, meals in meal_plan.items() %}
+      <div class="day">
+        <h4>{{ day }}</h4>
+        <ul>
+          <li><strong>Breakfast:</strong> {{ meals.breakfast }}</li>
+          <li><strong>Lunch:</strong> {{ meals.lunch }}</li>
+          <li><strong>Dinner:</strong> {{ meals.dinner }}</li>
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+
+  <p style="margin-top:12px"><a href="{{ url_for('main.dashboard') }}">← Back to Dashboard</a></p>
+</div>
+
+<!-- Chatbot -->
+<div id="chatbot">
+  <div id="chat-header">💬 Assistant</div>
+  <div id="chat-log"></div>
+  <div id="chat-input">
+    <input id="chat-text" placeholder="Ask about your result or meal plan…" />
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<style>
+.card{max-width:1000px;margin:18px auto;padding:18px;border-radius:12px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:#f3f6ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+.day{border:1px solid #eee;padding:10px;border-radius:8px;background:#fafafa}
+#chatbot{position:fixed;right:20px;bottom:20px;width:320px;background:#fff;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.12);overflow:hidden}
+#chat-header{background:#2f66d4;color:#fff;padding:10px;font-weight:800}
+#chat-log{height:260px;overflow:auto;padding:10px;background:#f8fafc}
+#chat-input{display:flex;gap:8px;padding:10px}
+#chat-input input{flex:1;padding:8px;border-radius:8px;border:1px solid #ddd}
+#chat-send{background:#2f66d4;color:#fff;padding:8px 12px;border-radius:8px;border:0}
+.msg{margin:6px 0;padding:8px;border-radius:8px}
+.me{background:#e7f0ff;text-align:right}
+.bot{background:#eef1f4;text-align:left}
+</style>
+
+<script>
+(function(){
+  const disease = "{{ disease }}";
+  const prob = {{ probability }};
+  const chatLog = document.getElementById('chat-log');
+  const chatText = document.getElementById('chat-text');
+  const chatSend = document.getElementById('chat-send');
+
+  function addMsg(text, who){
+    const d = document.createElement('div');
+    d.className = 'msg ' + (who==='me'?'me':'bot');
+    d.textContent = text;
+    chatLog.appendChild(d);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  function botReply(q){
+    const s = q.toLowerCase();
+    if(s.includes('risk')) return `Estimated ${disease} risk: ${prob}%. This is an estimate, not a diagnosis.`;
+    if(s.includes('meal')||s.includes('diet')) return "Follow the 7-day plan above. Focus on whole foods and hydration.";
+    if(s.includes('exercise')) return "Aim for regular moderate exercise (e.g. 30 min/day) unless advised otherwise.";
+    return "I can answer basic questions about risk and diet. For medical advice, consult a clinician.";
+  }
+
+  chatSend.addEventListener('click', ()=> {
+    const q = chatText.value.trim(); if(!q) return; addMsg(q,'me'); chatText.value='';
+    setTimeout(()=> addMsg(botReply(q),'bot'), 300);
+  });
+  chatText.addEventListener('keydown',(e)=>{ if(e.key==='Enter') chatSend.click(); });
+
+  addMsg(`Hello — I can answer basic questions about your ${disease} result.`, 'bot');
+})();
+</script>
+
+{% endblock %}

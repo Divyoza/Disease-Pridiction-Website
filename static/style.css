@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f5f7fa;
+  color: #333;
+}
+.navbar {
+  background: #2d6cdf;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.container {
+  width: 80%;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+form label {
+  margin-top: 10px;
+}
+form input, button {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+button {
+  margin-top: 15px;
+  background: #2d6cdf;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background: #244f9e;
+}
+ul.disease-list {
+  list-style: none;
+  padding: 0;
+}
+ul.disease-list li {
+  margin: 10px 0;
+}
+ul.disease-list a {
+  text-decoration: none;
+  color: #2d6cdf;
+  font-weight: bold;
+}
+ul.meal-plan {
+  list-style: none;
+  padding: 0;
+}
+.flash {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+.flash li {
+  padding: 10px;
+  border-radius: 6px;
+  margin: 5px 0;
+}
+.flash li.success { background: #d4edda; color: #155724; }
+.flash li.error { background: #f8d7da; color: #721c24; }

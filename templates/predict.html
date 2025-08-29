@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{ disease }} Prediction</h2>
+
+  <form method="POST" class="form-grid">
+    {% for f in fields %}
+      <label for="{{ f.name }}">{{ f.label }}</label>
+      {% if f.type == "select" %}
+        <select name="{{ f.name }}" id="{{ f.name }}" required>
+          <option value="" disabled selected>-- select --</option>
+          {% for opt in f.options %}
+            <option value="{{ opt }}">{{ opt }}</option>
+          {% endfor %}
+        </select>
+      {% else %}
+        <input type="{{ f.type }}" name="{{ f.name }}" id="{{ f.name }}"
+               {% if f.step %} step="{{ f.step }}"{% endif %} required />
+      {% endif %}
+    {% endfor %}
+    <div style="grid-column:1/-1">
+      <button type="submit">Predict</button>
+    </div>
+  </form>
+
+  <p style="margin-top:12px"><a href="{{ url_for('main.dashboard') }}">← Back to Dashboard</a></p>
+</div>
+
+<style>
+.card{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.form-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:700px){ .form-grid{grid-template-columns:1fr 1fr} }
+.form-grid label{font-weight:700}
+.form-grid input, .form-grid select{padding:8px;border-radius:8px;border:1px solid #ddd}
+button{background:#2f66d4;color:#fff;border:0;padding:12px;border-radius:10px;font-weight:700}
+</style>
+
+{% endblock %}

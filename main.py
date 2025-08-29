@@ -6,18 +6,6 @@ import numpy as np
 
 main = Blueprint("main", __name__)
 
-# ---------------------------
-# Supported diseases & forms
-# ---------------------------
-# Expected model filenames (put these in ./models):
-#  - diabetes_model.pkl
-#  - heart_model.pkl
-#  - kidney_model.pkl
-#  - liver_model.pkl
-#  - breast_cancer_model.pkl
-#  - malaria_model.pkl
-#  - pneumonia_model.pkl
-
 def _model_path(disease: str) -> str:
     base = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base, "models", f"{disease}_model.pkl")
@@ -77,7 +65,7 @@ def _form_config(disease: str) -> List[Dict[str, Any]]:
             {"name":"Albumin_and_Globulin_Ratio","label":"A/G Ratio","type":"number","step":"0.01"},
         ]
     if d == "breast_cancer":
-        # minimal example — adjust to your trained features
+        
         return [
             {"name":"mean_radius","label":"Mean Radius","type":"number"},
             {"name":"mean_texture","label":"Mean Texture","type":"number"},
@@ -93,7 +81,7 @@ def _form_config(disease: str) -> List[Dict[str, Any]]:
             {"name":"Platelets","label":"Platelets","type":"number"},
         ]
     if d == "pneumonia":
-        # for simple demo, use numeric symptoms/codes (real systems use images)
+       
         return [
             {"name":"Age","label":"Age","type":"number"},
             {"name":"Fever","label":"Fever (°C)","type":"number","step":"0.1"},
@@ -103,9 +91,6 @@ def _form_config(disease: str) -> List[Dict[str, Any]]:
     return []
 
 
-# ---------------------------
-# Preprocessing (map selects -> numeric)
-# ---------------------------
 def _preprocess(disease: str, form: Dict[str, str]) -> List[float]:
     cfg = _form_config(disease)
     # encoders for categorical selects
@@ -259,3 +244,4 @@ def predict(disease):
     except Exception as e:
         flash(f"Error: {e}", "error")
         return render_template("predict.html", disease=disease.title(), fields=fields)
+
